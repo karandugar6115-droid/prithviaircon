@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prithvi Aircon - Premium Refrigeration & HVAC Parts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #222;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* LOCATION BAR */
+        .location-bar {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        .location-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .location-icon {
+            font-size: 1.4rem;
+        }
+
+        /* FLOATING BUTTONS */
+        .floating-buttons {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .whatsapp-float, .quote-float {
+            width: 60px;
+            height: 60px;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            animation: floatBounce 2s infinite;
+        }
+
+        .whatsapp-float {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.6);
+        }
+
+        .quote-float {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            font-size: 24px;
+        }
+
+        .quote-float:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+        }
+
+        @keyframes floatBounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* QUOTE MODAL */
+        .quote-modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .quote-modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .quote-modal.active .quote-modal-content {
+            transform: scale(1);
+        }
+
+        .quote-modal h3 {
+            color: #0a3d62;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #1e90ff;
+            background: white;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .quote-summary {
+            background: #f4fbff;
+            border: 1px solid #d5e6fd;
+            border-radius: 18px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .quote-summary h4 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #0a3d62;
+        }
+
+        .quote-summary p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e5effb;
+            font-size: 0.98rem;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .copy-quote-btn {
+            margin-top: 1rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #0a3d62 0%, #1e90ff 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(10, 61, 98, 0.4);
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: #f1f3f4;
+            color: #333;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #0a3d62 0%, #1e90ff 50%, #00b4d8 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+        }
+
+        .contact {
+            background: rgba(255, 234, 167, 0.2);
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border: 2px solid rgba(255, 234, 167, 0.5);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .contact:hover {
+            background: rgba(255, 234, 167, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* NAVIGATION */
+        nav {
+            background: linear-gradient(135deg, #074173 0%, #0a5c9a 100%);
+            padding: 1rem 0;
+            position: sticky;
+            top: 70px;
+            z-index: 99;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* HERO */
+        .hero {
+            background: white;
+            text-align: center;
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #0a3d62, #1e90ff, #00b4d8);
+        }
+
+        .hero h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: #0a3d62;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* PRODUCTS */
+        .products {
+            padding: 6rem 2rem;
+            background: #f8f9ff;
+        }
+
+        .products h2 {
+            text-align: center;
+            margin-bottom: 4rem;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            color: #0a3d62;
+            position: relative;
+        }
+
+        .products h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #0a3d62, #1e90ff);
+            border-radius: 2px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category-block {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            color: #1b3d70;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.8rem;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .product-image {
+            width: 170px;
+            height: 140px;
+            object-fit: contain;
+            border-radius: 18px;
+            background: #f8f9fa;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0a3d62, #1e90ff, #00b4d8);
+        }
+
+        .card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+        }
+
+        .card h3 {
+            color: #0a3d62;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            min-height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 1rem;
+            opacity: 0.9;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .availability {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .availability {
+            transform: scale(1.05);
+        }
+
+        /* FOOTER */
+        footer {
+            background: linear-gradient(135deg, #0a3d62 0%, #1e3a8a 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #1e90ff, #00b4d8, #00cec9);
+        }
+
+        footer h3 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        footer p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .phone {
+            background: rgba(255, 234, 167, 0.2);
+            display: inline-block;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            border: 2px solid rgba(255, 234, 167, 0.5);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .phone:hover {
+            background: rgba(255, 234, 167, 0.3);
+            transform: scale(1.05);
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .footer-contact p {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .floating-buttons {
+                bottom: 20px;
+                right: 20px;
+                gap: 12px;
+            }
+            
+            .whatsapp-float, .quote-float {
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav {
+                top: 60px;
+            }
+            
+            nav a {
+                padding: 0.6rem 1.2rem;
+                font-size: 1rem;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .product-image {
+                width: 120px;
+                height: 100px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .location-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* SMOOTH SCROLL */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- LOCATION BAR -->
+    <div class="location-bar">
+        <div class="location-info">
+            <span class="location-icon">📍</span>
+            <strong>Chennai, Tamil Nadu</strong> | 
+             Delivery PAN India | All Refrigeration & HVAC Spare Parts Available
+        </div>
+    </div>
+
+    <!-- FLOATING BUTTONS -->
+    <div class="floating-buttons">
+        <!-- QUOTE BUTTON (TOP) -->
+        <a href="#" onclick="openQuoteModal()" class="quote-float" title="Get Quote">
+            💰
+        </a>
+        
+        <!-- WHATSAPP BUTTON (BOTTOM) -->
+        <a href="https://wa.me/916369602019?text=Hi!%20I%20need%20refrigeration%20parts%20from%20Prithvi%20Aircon" 
+           class="whatsapp-float" target="_blank" rel="noopener" title="WhatsApp Chat">
+            💬
+        </a>
+    </div>
+
+    <!-- QUOTE MODAL -->
+    <div id="quoteModal" class="quote-modal">
+        <div class="quote-modal-content">
+            <span class="close-modal" onclick="closeQuoteModal()">&times;</span>
+            <h3>📋 Get Your Quote</h3>
+            <form id="quoteForm">
+                <div class="form-group">
+                    <label>Your Name *</label>
+                    <input type="text" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Products Needed *</label>
+                    <select name="products" required>
+                        <option value="">Select a product</option>
+                        <option value="Compressor">Compressor</option>
+                        <option value="Copper Fittings">Copper Fittings</option>
+                        <option value="Expansion Valve">Expansion Valve</option>
+                        <option value="Door Hinges">Door Hinges</option>
+                        <option value="Vibration Eliminator">Vibration Eliminator</option>
+                        <option value="Welding Rod">Welding Rod</option>
+                        <option value="Latch Handle">Latch Handle</option>
+                        <option value="Vacuum Pump">Vacuum Pump</option>
+                        <option value="2 in 1 Vacuum Pump">2 in 1 Vacuum Pump</option>
+                        <option value="Copper Pipe">Copper Pipe</option>
+                        <option value="Brass Fittings">Brass Fittings</option>
+                        <option value="Danfoss Core">Danfoss Core</option>
+                        <option value="Drier">Drier</option>
+                        <option value="Refrigeration Gas">Refrigeration Gas</option>
+                        <option value="Leak Check">Leak Check</option>
+                        <option value="Refrigeration oil">Refrigeration oil</option>
+                        <option value="Axial Fan">Axial Fan</option>
+                        <option value="Fan Blade">Fan Blade</option>
+                        <option value="Single Gauge">Single Gauge</option>
+                        <option value="Double Manifold Gauge">Double Manifold Gauge</option>
+                        <option value="Micron Gauge">Micron Gauge</option>
+                        <option value="Charging Hose">Charging Hose</option>
+                        <option value="Tube Bender">Tube Bender</option>
+                        <option value="Nitrile Tube">Nitrile Tube</option>
+                        <option value="Oil Check">Oil Check</option>
+                        <option value="Digital Thermometer">Digital Thermometer</option>
+                        <option value="Thermometer">Thermometer</option>
+                        <option value="Plate Heat Exchanger">Plate Heat Exchanger</option>
+                        <option value="Temperature Controller">Temperature Controller</option>
+                        <option value="Recovery Pump">Recovery Pump</option>
+                        <option value="Motor">Motor</option>
+                        <option value="Pressure Washer Pump">Pressure Washer Pump</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" name="quantity" placeholder="e.g. 10">
+                    </div>
+                    <div class="form-group">
+                        <label>Delivery Location *</label>
+                        <input type="text" name="delivery_location" placeholder="City/District/State" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Current Location *</label>
+                    <input type="text" name="current_location" placeholder="Your City/Area (for fastest delivery)" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Additional Details</label>
+                    <textarea name="details" rows="2" placeholder="Any special requirements? Urgent delivery?"></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Send Quote Request</button>
+            </form>
+
+            <div id="quoteSummary" class="quote-summary hidden">
+                <h4>✅ Quote Request Captured</h4>
+                <p>We have captured your quote details. Please keep them for your reference.</p>
+                <div class="summary-row"><strong>Name</strong><span data-key="name"></span></div>
+                <div class="summary-row"><strong>Phone</strong><span data-key="phone"></span></div>
+                <div class="summary-row"><strong>Products</strong><span data-key="products"></span></div>
+                <div class="summary-row"><strong>Quantity</strong><span data-key="quantity"></span></div>
+                <div class="summary-row"><strong>Delivery</strong><span data-key="delivery_location"></span></div>
+                <div class="summary-row"><strong>Current Location</strong><span data-key="current_location"></span></div>
+                <div class="summary-row"><strong>Details</strong><span data-key="details"></span></div>
+                <button type="button" class="btn copy-quote-btn">Copy Quote Details</button>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <h1>PRITHVI AIRCON</h1>
+            <p>Complete Refrigeration & HVAC Spare Parts Supplier</p>
+            <div class="contact">📞 6369602019</div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#home">Home</a>
+            <a href="#products">Products</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <h2>Professional Refrigeration Products</h2>
+        <p>
+            Premium quality compressors, copper fittings, charging tools, 
+            refrigeration accessories and HVAC spare parts for professionals.
+            <br><strong>📍 Based in Chennai, Tamil Nadus |Delivery PAN India</strong>
+            <br><strong>SALES ONLY - No Installation Services</strong>
+        </p>
+    </section>
+
+    <section id="products" class="products">
+        <h2>Our Complete Product Range</h2>
+
+        <div class="category-block">
+            <h3 class="category-title">Compressors & Motors</h3>
+            <div class="product-grid">
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="compressor.png" alt="Compressor" class="product-image">
+                    <h3>Compressor</h3>
+                    <p>High efficiency refrigeration compressor for all systems</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="motor.png" alt="Motor" class="product-image">
+                    <h3>Motor</h3>
+                    <p>HVAC and refrigeration motor replacements</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-block">
+            <h3 class="category-title">Pipes & Fittings</h3>
+            <div class="product-grid">
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="copper pipe.png" alt="Copper Pipe" class="product-image">
+                    <h3>Copper Pipe</h3>
+                    <p>High purity refrigeration copper pipe</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="brass fittings.png" alt="Brass Fittings" class="product-image">
+                    <h3>Brass Fittings</h3>
+                    <p>Heavy duty brass refrigeration fittings</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="copper fittings.png" alt="Copper Fittings" class="product-image">
+                    <h3>Copper Fittings</h3>
+                    <p>Premium quality copper fittings for refrigeration piping</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="latch handle.png" alt="Latch Handle" class="product-image">
+                    <h3>Latch Handle</h3>
+                    <p>Industrial grade refrigeration latch handles</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="hinges.png" alt="Hinges" class="product-image">
+                    <h3>Hinges</h3>
+                    <p>Heavy duty refrigeration hinges</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Nitrile Tube.png" alt="Nitrile Tube" class="product-image">
+                    <h3>Nitrile Tube</h3>
+                    <p>Flexible nitrile tubing for refrigeration service</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-block">
+            <h3 class="category-title">Valves & Controls</h3>
+            <div class="product-grid">
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Expansion_valve.png" alt="Expansion Valve" class="product-image">
+                    <h3>Expansion Valve</h3>
+                    <p>Reliable thermostatic expansion valves</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="heat exchanger.png" alt="Plate Heat Exchanger" class="product-image">
+                    <h3>Plate Heat Exchanger</h3>
+                    <p>Compact stainless steel heat exchangers</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Danfoss core.png" alt="Danfoss Core" class="product-image">
+                    <h3>Danfoss Core</h3>
+                    <p>Genuine Danfoss refrigeration control components</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Temperature controller.png" alt="Temperature Controller" class="product-image">
+                    <h3>Temperature Controller</h3>
+                    <p>Reliable temperature controllers for refrigeration systems</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-block">
+            <h3 class="category-title">Refrigerants & Oils</h3>
+            <div class="product-grid">
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Gases.png" alt="Refrigeration Gas" class="product-image">
+                    <h3>Refrigeration Gas</h3>
+                    <p>Refrigeration and HVAC gas supplies</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Refrigerant oil.jpg" alt="Refrigeration oil" class="product-image">
+                    <h3>Refrigeration oil</h3>
+                    <p>Refrigerant oil for refrigeration systems</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="drier.png" alt="Drier" class="product-image">
+                    <h3>Drier</h3>
+                    <p>Reliable refrigeration drier components</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-block">
+            <h3 class="category-title">Gauges & Measurement</h3>
+            <div class="product-grid">
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Leak Check.png" alt="Leak Check" class="product-image">
+                    <h3>Leak Check</h3>
+                    <p>Leak detection tools and accessories</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Single Gauge.png" alt="Single Gauge" class="product-image">
+                    <h3>Single Gauge</h3>
+                    <p>Single gauge instruments for refrigeration checks</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Double Manifold Gauge.png" alt="Double Manifold Gauge" class="product-image">
+                    <h3>Double Manifold Gauge</h3>
+                    <p>Two-stage manifold gauge sets for HVAC service</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Micron_gauge_-removebg-preview.png" alt="Micron Gauge" class="product-image">
+                    <h3>Micron Gauge</h3>
+                    <p>High precision micron gauges for vacuum measurement</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="thermometer.png" alt="Thermometer" class="product-image">
+                    <h3>Thermometer</h3>
+                    <p>Accurate temperature measurement devices</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-block">
+            <h3 class="category-title">Service Tools</h3>
+            <div class="product-grid">
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Flaring tool.png" alt="Flaring Tool" class="product-image">
+                    <h3>Flaring Tool</h3>
+                    <p>Professional flaring tools for copper tubing</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Charging Hose.png" alt="Charging Hose" class="product-image">
+                    <h3>Charging Hose</h3>
+                    <p>Pressure-rated charging hoses for refrigerant service</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="vacuum pressure pump.png" alt="2 in 1 Vacuum Pump" class="product-image">
+                    <h3>2 in 1 Vacuum Pump</h3>
+                    <p>Combined vacuum pump for fast refrigeration evacuation</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Tube Bender.png" alt="Tube Bender" class="product-image">
+                    <h3>Tube Bender</h3>
+                    <p>Professional tube bending tools for copper tubing</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Vacuum Pump.png" alt="Pressure Washer Pump" class="product-image">
+                    <h3>Pressure Washer Pump</h3>
+                    <p>Durable pressure washer pumps for workshop use</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="https://via.placeholder.com/140x120?text=Recovery+Pump" alt="Recovery Pump" class="product-image">
+                    <h3>Recovery Pump</h3>
+                    <p>Refrigerant recovery pumps for safe servicing</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="https://via.placeholder.com/140x120?text=Oil+Check" alt="Oil Check" class="product-image">
+                    <h3>Oil Check</h3>
+                    <p>Oil checking tools for refrigeration compressors</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-block">
+            <h3 class="category-title">Fans & Accessories</h3>
+            <div class="product-grid">
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="axial fan.png" alt="Axial Fan" class="product-image">
+                    <h3>Axial Fan</h3>
+                    <p>High airflow axial condenser fan units</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="Fan Blade.png" alt="Fan Blade" class="product-image">
+                    <h3>Fan Blade</h3>
+                    <p>Durable fan blades for HVAC equipment</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+                <div class="card" onclick="openQuoteModal()">
+                    <img src="vibration element.png" alt="Vibration Element" class="product-image">
+                    <h3>Vibration Element</h3>
+                    <p>Flexible compressions and eliminators for compressors</p>
+                    <div class="availability">AVAILABLE</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="hero" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4f8 100%);">
+        <h2>Why Choose Prithvi Aircon?</h2>
+        <p>
+            ✅ Premium quality products from trusted brands<br>
+            ✅ 📍 Based in <strong>Tamil Nadu , Chennai</strong> - Fast delivery PAN India<br>
+            ✅ Competitive bulk order pricing<br>
+            ✅ 100% genuine spare parts guaranteed
+        </p>
+    </section>
+
+    <footer id="contact">
+        <h3>Prithvi Aircon</h3>
+        <p>📍 Tamil Nadu , Chennai | All Refrigeration & HVAC Spare Parts Available</p>
+        <div class="footer-contact">
+            <div class="phone">📞 6369602019</div>
+            <p>or use buttons above 👆</p>
+        </div>
+        <p style="margin-top: 2rem; opacity: 0.8; font-size: 0.9rem;">
+            Sales Only | No Installation Services | PAN India Delivery
+        </p>
+    </footer>
+
+    </footer>
+   <script>
+    // OPEN QUOTE MODAL
+    function openQuoteModal() {
+        document.getElementById('quoteModal').style.display = 'block';
+        document.getElementById('quoteModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // CLOSE QUOTE MODAL
+    function closeQuoteModal() {
+        document.getElementById('quoteModal').style.display = 'none';
+        document.getElementById('quoteModal').classList.remove('active');
+        document.body.style.overflow = 'auto';
+
+        const form = document.getElementById('quoteForm');
+        const summary = document.getElementById('quoteSummary');
+        form.classList.remove('hidden');
+        summary.classList.add('hidden');
+        form.reset();
+    }
+
+    // CLOSE WHEN CLICKING OUTSIDE
+    window.onclick = function(event) {
+        const modal = document.getElementById('quoteModal');
+
+        if (event.target == modal) {
+            closeQuoteModal();
+        }
+    }
+    // FORM SUBMIT
+    document.getElementById('quoteForm').addEventListener('submit', function(e) {
+
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        const name = formData.get('name');
+        const phone = formData.get('phone');
+        const products = formData.get('products');
+        const quantity = formData.get('quantity') || 'Not specified';
+        const deliveryLocation = formData.get('delivery_location');
+        const currentLocation = formData.get('current_location');
+        const details = formData.get('details') || 'None';
+
+        const quoteText =
+`🆕 NEW QUOTE REQUEST!
+
+ Name: ${name}
+ Phone: ${phone}
+ Current Location: ${currentLocation}
+ Delivery Location: ${deliveryLocation}
+ Products: ${products}
+ Quantity: ${quantity}
+ Details: ${details}`;
+
+        const form = this;
+        const summary = document.getElementById('quoteSummary');
+
+        summary.querySelector('[data-key="name"]').textContent = name;
+        summary.querySelector('[data-key="phone"]').textContent = phone;
+        summary.querySelector('[data-key="products"]').textContent = products;
+        summary.querySelector('[data-key="quantity"]').textContent = quantity;
+        summary.querySelector('[data-key="delivery_location"]').textContent = deliveryLocation;
+        summary.querySelector('[data-key="current_location"]').textContent = currentLocation;
+        summary.querySelector('[data-key="details"]').textContent = details;
+
+        form.classList.add('hidden');
+        summary.classList.remove('hidden');
+
+        window.open(
+            `https://wa.me/919840549249?text=${encodeURIComponent(quoteText)}`,
+            '_blank'
+        );
+
+        // SUCCESS ALERT
+        alert("Quote request is ready in WhatsApp. Please send it there to complete delivery.");
+
+        document.querySelector('.copy-quote-btn').onclick = function() {
+            navigator.clipboard.writeText(quoteText).then(function() {
+                alert('Quote details copied to clipboard.');
+            }).catch(function() {
+                alert('Unable to copy the quote. Please copy it manually.');
+            });
+        };
+
+    });
+
+    // ESC KEY CLOSE
+    document.addEventListener('keydown', function(e) {
+
+        if (e.key === 'Escape') {
+            closeQuoteModal();
+        }
+     });
+</script>
